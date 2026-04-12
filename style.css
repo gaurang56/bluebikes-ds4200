@@ -1,0 +1,148 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+header .subtitle {
+    font-size: 1rem;
+    color: #555;
+}
+
+header .course {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+h2 {
+    font-size: 1.3rem;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 1.05rem;
+    margin-bottom: 5px;
+}
+
+p {
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+ol, ul {
+    margin: 10px 0 15px 25px;
+    font-size: 0.95rem;
+}
+
+a {
+    color: #1a0dab;
+}
+
+section {
+    margin-bottom: 35px;
+}
+
+.viz-container {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.viz-container iframe {
+    border: 1px solid #ddd;
+}
+
+.interaction-note {
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.takeaway {
+    margin-top: 10px;
+}
+
+.caveat {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+/* D3 map */
+#controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+#controls label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.year-btn {
+    padding: 4px 12px;
+    border: 1px solid #333;
+    background: white;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.year-btn.active {
+    background: #333;
+    color: white;
+}
+
+#station-count {
+    font-size: 13px;
+    color: #777;
+    margin-left: 8px;
+}
+
+#map-container svg {
+    border: 1px solid #ddd;
+}
+
+.tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 100;
+}
+
+.conclusion-card {
+    margin-bottom: 15px;
+    padding-left: 15px;
+    border-left: 3px solid #999;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 15px;
+    border-top: 1px solid #ccc;
+    font-size: 0.85rem;
+    color: #888;
+}

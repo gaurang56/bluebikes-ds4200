@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bluebikes - Pandemic Impact on Bike-Sharing</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>How Did the Pandemic Reshape Boston's Bike-Share?</h1>
+    <p class="subtitle">An analysis of Bluebikes ridership across 2019, 2022, and 2023</p>
+    <p class="course">DS4200 - Information Presentation and Data Visualization</p>
+</header>
+
+<section>
+    <h2>Introduction</h2>
+    <p>
+        Bluebikes is Boston's public bike-share system and at this point it covers most of the city. When COVID hit, public transit usage dropped and transportation in Boston changed significantly. We wanted to dig into the data to understand what happened to bike-sharing through the pandemic. Did it recover? Did it change? And if so, how?
+    </p>
+    <p>
+        We selected three years of Bluebikes trip data to compare: <b>2019</b> which is the last full year before the pandemic, <b>2022</b> when things were starting to recover, and <b>2023</b> which gives us a more recent picture. The goal here is to illuminate patterns that could help Bluebikes, as a company, make better decisions about where to locate stations, when to move bikes around, and how to think about their changing rider base.
+    </p>
+    <p>Our analysis addresses four questions:</p>
+    <ol>
+        <li>How has overall ridership changed and is the mix of Subscribers vs Casual riders shifting?</li>
+        <li>Have the peak riding times changed since people started working from home?</li>
+        <li>How has the station network grown geographically?</li>
+        <li>Are people riding differently in terms of how long their trips are?</li>
+    </ol>
+</section>
+
+<section>
+    <h2>About the Data</h2>
+    <p>
+        Our data comes from the <a href="https://bluebikes.com/system-data" target="_blank">Bluebikes System Data</a> page where they publish trip history files every quarter. Each row in the raw data is a single trip: one person on one bike going from one station to another.
+    </p>
+    <p>
+        We downloaded all 36 monthly CSV files across the three years which came out to about <b>9.97 million trips total</b>. After cleaning out bad data like trips shorter than a minute or longer than 24 hours and rows with missing coordinates, we ended up with about <b>9.89 million usable trips</b>. We then aggregated that full dataset into focused summary tables, one per visualization. That means every count and average you see in the charts below is directly from the complete data, not a sample.
+    </p>
+    <p>
+        The main features we worked with include start and stop times, hour of day, day of week, station names and coordinates, trip duration, and user type which is either Subscriber or Casual.
+    </p>
+</section>
+
+<section>
+    <h2>References</h2>
+    <ul>
+        <li><a href="https://bluebikes.com/system-data" target="_blank">Bluebikes System Data</a> - Official trip data source</li>
+        <li><a href="https://www.sciencedirect.com/science/article/pii/S2210670722003237" target="_blank">Chen et al. (2022) - "The impact of the COVID-19 pandemic on the behaviour of bike sharing users"</a></li>
+    </ul>
+</section>
+
+<hr>
+
+<section>
+    <h2>1. Monthly Ridership Over Time</h2>
+    <div class="viz-container">
+        <iframe src="viz_html/viz1_rider_mix.html" width="720" height="470" frameborder="0"></iframe>
+    </div>
+    <p class="interaction-note">Click a year in the legend to isolate it. Hover any point for the Subscriber and Casual breakdown.</p>
+    <h3>Takeaway</h3>
+    <p>
+        At first glance, it's clear to see that 2022 and 2023 both exceed 2019 in total ridership across every month. The system did not just recover from the pandemic, it grew. The seasonal pattern is consistently observed, with summer peaks and winter dips, but even in the winter months 2023 saw nearly double the ridership of the same months in 2019. That suggests a broader and more committed rider base has formed. If you hover over the points you can also see that Casual riders are making up an increasing share of the total, especially in the warmer months.
+    </p>
+</section>
+
+<section>
+    <h2>2. Activity Heatmap: When Do People Ride?</h2>
+    <div class="viz-container">
+        <iframe src="viz_html/viz2_heatmap.html" width="770" height="600" frameborder="0"></iframe>
+    </div>
+    <p class="interaction-note">All three years are shown with a shared color scale so you can compare directly. Hover over any cell for exact trip counts.</p>
+    <h3>Takeaway</h3>
+    <p>
+        In 2019 the commute pattern is very clear. You can see the dark bands at 8am and 5 to 6pm on weekdays which is exactly what you would expect from a system dominated by commuters. But when you look at 2022 and 2023 those peaks aren't quite as sharp, instead, usage is more evenly spread out through the day. This likely can be attributed to the growing trend in hybrid and remote work. Weekends also look busier relative to weekdays than they did in the past. This is important for bike rebalancing. Rather than simply moving bikes around twice a day during rush hour, Bluebikes may need to consider moving bikes more continuously throughout the day.
+    </p>
+</section>
+
+<section>
+    <h2>3. Station Map: Where Do People Ride?</h2>
+    <div class="viz-container" id="map-wrapper">
+        <div id="controls">
+            <label>Year:</label>
+            <button class="year-btn active" data-year="2019">2019</button>
+            <button class="year-btn" data-year="2022">2022</button>
+            <button class="year-btn" data-year="2023">2023</button>
+            <span id="station-count"></span>
+        </div>
+        <div id="map-container" style="width:700px; height:500px;"></div>
+        <div class="tooltip" id="tooltip"></div>
+    </div>
+    <p class="interaction-note">Click the year buttons to switch between years. Scroll to zoom in, drag to pan around. Hover over any station for details.</p>
+    <h3>Takeaway</h3>
+    <p>
+        The most visible change here is the significant growth of the network. Stations increased from 332 in 2019, to 440 in 2022, to 805 in 2023. Over the years, there is clearly an expansion beyond the original Cambridge and Boston core and into the surrounding neighborhoods. The busiest stations maintained their prominence as they are concentrated downtown and by high traffic university areas, but there is real demand growing for the newer, outlying stations as well. For Bluebikes, this presents a clear opportunity: Continue expanding the network with a focus on promoting these newer areas to build up ridership and increase the overall accessibility of the system.
+    </p>
+</section>
+
+<section>
+    <h2>4. Trip Duration: How Has Riding Behavior Changed?</h2>
+    <div class="viz-container">
+        <iframe src="viz_html/viz5_duration.html" width="770" height="620" frameborder="0"></iframe>
+    </div>
+    <p class="interaction-note">Drag on the top line chart to select a duration range and the bottom bar chart will zoom into it. Use the Rider Type filter to compare Subscribers vs Casual riders.</p>
+    <h3>Takeaway</h3>
+    <p>
+        At first glance, trip durations look similar across all three years with most rides peaking around 5 to 10 minutes. But the interesting part comes when you filter to Casual only. Casual riders take significantly longer trips, around 19 minutes on average compared to about 10 for Subscribers. This can be explained as Subscribers are mostly commuters doing the same short route every day, while Casual riders are more likely exploring or running errands. Since we already explored the growth in total trips in the first chart, Bluebikes should consider how their pricing and dock availability can be adjusted for these longer and less predictable trip patterns.
+    </p>
+</section>
+
+<hr>
+
+<section>
+    <h2>Summary and Conclusions</h2>
+    <p>After looking at the data across all three years, a few things stood out to us.</p>
+
+    <h3>1. Casual riders are becoming a much bigger part of the picture</h3>
+    <p>
+        The share of Casual rides has grown significantly since 2019. This is not just a summer tourism anymore, the increase carries throughout the year. We think Bluebikes should adjust their strategy by investing in Casual friendly options, such as improved day passes, tourist oriented routes, and weekend promotions.
+    </p>
+
+    <h3>2. People are not just riding during rush hour anymore</h3>
+    <p>
+        The classic commute peaks at 8am and 5pm have flattened and usage is more evenly spread throughout the day. This can likely be attributed to the rise in remote and hybrid work. For Bluebikes that means the old model, rebalancing bikes twice a day during rush hour, will need to shift toward something more continuous. Additionally, the increase in ridership on Weekends warrants some attention to ensure there are enough bikes for Casual riders.
+    </p>
+
+    <h3>3. The station network is expanding fast</h3>
+    <p>
+        The number of stations nearly doubled from 2019 to 2023. The newer stations show lower usage compared to the established core, as they lie on the outer edge of the network and are still building up ridership. The demand is there, Bluebikes should continue to accelerate growth by expanding the network and targeting any gaps in coverage. 
+    </p>
+
+    <h3>Future Work</h3>
+    <p>
+        There are a few directions we would like to explore in future analysis. Adding weather data would help disentangle seasonal effects from pandemic effects. Looking at station to station flow patterns could help optimize rebalancing routes. And if Bluebikes begins reporting demographic data again, we'd like to look into whether or not the rider base is getting more diverse over time.
+    </p>
+</section>
+
+<footer>
+    <p>DS4200 - Information Presentation and Data Visualization - Spring 2026</p>
+    <p>Data: <a href="https://bluebikes.com/system-data" target="_blank">Bluebikes System Data</a></p>
+</footer>
+
+<script>
+(function() {
+    var currentYear = 2019;
+    var allData = [];
+    var tooltip = d3.select("#tooltip");
+    var sizeScale = d3.scaleSqrt().range([3, 14]);
+
+    var map = L.map('map-container').setView([42.36, -71.06], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 18
+    }).addTo(map);
+
+    var svgLayer = L.svg();
+    svgLayer.addTo(map);
+
+    var svg = d3.select("#map-container").select("svg");
+    var g = svg.append("g");
+
+    function projectPoint(lat, lng) {
+        var point = map.latLngToLayerPoint(new L.LatLng(lat, lng));
+        return point;
+    }
+
+    function updateMap(year) {
+        currentYear = year;
+        var yearData = allData.filter(function(d) { return d.year === year; });
+        sizeScale.domain([0, d3.max(yearData, function(d) { return d.trip_count; })]);
+
+        var circles = g.selectAll("circle.station").data(yearData, function(d) { return d.station_id; });
+
+        circles.exit().transition().duration(300).attr("r", 0).remove();
+
+        circles.transition().duration(500)
+            .attr("cx", function(d) { return projectPoint(d.lat, d.lng).x; })
+            .attr("cy", function(d) { return projectPoint(d.lat, d.lng).y; })
+            .attr("r", function(d) { return sizeScale(d.trip_count); });
+
+        circles.enter().append("circle")
+            .attr("class", "station")
+            .attr("cx", function(d) { return projectPoint(d.lat, d.lng).x; })
+            .attr("cy", function(d) { return projectPoint(d.lat, d.lng).y; })
+            .attr("r", 0)
+            .attr("fill", "#4a90d9")
+            .attr("opacity", 0.6)
+            .attr("stroke", "#2a5a8a")
+            .attr("stroke-width", 0.5)
+            .on("mouseover", function(event, d) {
+                d3.select(this).attr("opacity", 1).attr("stroke-width", 2);
+                tooltip.style("opacity", 1)
+                    .html("<b>" + d.station_name + "</b><br>Total trips: " + d.trip_count.toLocaleString() + "<br>Departures: " + d.departures.toLocaleString() + "<br>Arrivals: " + d.arrivals.toLocaleString())
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 25) + "px");
+            })
+            .on("mousemove", function(event) {
+                tooltip.style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 25) + "px");
+            })
+            .on("mouseout", function() {
+                d3.select(this).attr("opacity", 0.6).attr("stroke-width", 0.5);
+                tooltip.style("opacity", 0);
+            })
+            .transition().duration(500)
+            .attr("r", function(d) { return sizeScale(d.trip_count); });
+
+        var uniqueStations = new Set(yearData.map(function(d) { return d.station_id; }));
+        d3.select("#station-count").text(uniqueStations.size + " stations");
+
+        d3.selectAll(".year-btn").classed("active", false);
+        d3.selectAll(".year-btn").filter(function() {
+            return +this.dataset.year === year;
+        }).classed("active", true);
+    }
+
+    function repositionCircles() {
+        g.selectAll("circle.station")
+            .attr("cx", function(d) { return projectPoint(d.lat, d.lng).x; })
+            .attr("cy", function(d) { return projectPoint(d.lat, d.lng).y; });
+    }
+
+    map.on("moveend", repositionCircles);
+    map.on("zoomend", repositionCircles);
+
+    d3.csv("data/viz4_stations.csv").then(function(data) {
+        data.forEach(function(d) {
+            d.year = +d.year;
+            d.lat = +d.latitude;
+            d.lng = +d.longitude;
+            d.trip_count = +d.total_trips;
+            d.departures = +d.departures;
+            d.arrivals = +d.arrivals;
+        });
+        allData = data;
+        updateMap(2019);
+    });
+
+    d3.selectAll(".year-btn").on("click", function() {
+        updateMap(+this.dataset.year);
+    });
+})();
+</script>
+
+</body>
+</html>
