@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300, "strokeWidth": 0}, "axis": {"grid": true, "gridColor": "#eeeeee", "labelFontSize": 11, "titleFontSize": 12}}, "data": {"name": "data-1c9737b42a74a0f683c92a7f43b1493f"}, "mark": {"type": "bar", "cornerRadiusTopLeft": 3, "cornerRadiusTopRight": 3}, "encoding": {"color": {"field": "rider_type", "legend": {"labelFontSize": 12, "orient": "top", "symbolSize": 140, "symbolType": "square"}, "scale": {"domain": ["Subscriber", "Casual"], "range": ["#BA7517", "#059669"]}, "sort": ["Subscriber", "Casual"], "title": "Rider type", "type": "nominal"}, "tooltip": [{"field": "year", "title": "Year", "type": "ordinal"}, {"field": "rider_type", "title": "Rider type", "type": "nominal"}, {"field": "trips", "format": ",", "title": "Total trips", "type": "quantitative"}], "x": {"axis": {"labelAngle": 0, "labelFontSize": 13}, "field": "year", "title": null, "type": "ordinal"}, "xOffset": {"field": "rider_type", "sort": ["Subscriber", "Casual"], "type": "nominal"}, "y": {"axis": {"format": "~s"}, "field": "trips", "title": "Total annual trips", "type": "quantitative"}}, "height": 320, "title": "Annual trips by rider type: subscriber vs casual", "width": 500, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-1c9737b42a74a0f683c92a7f43b1493f": [{"year": 2019, "period": "Pre-Pandemic (2019)", "usertype": "Customer", "trips": 532364, "rider_type": "Casual"}, {"year": 2019, "period": "Pre-Pandemic (2019)", "usertype": "Subscriber", "trips": 1987601, "rider_type": "Subscriber"}, {"year": 2022, "period": "Post-Pandemic (2022)", "usertype": "Customer", "trips": 906925, "rider_type": "Casual"}, {"year": 2022, "period": "Post-Pandemic (2022)", "usertype": "Subscriber", "trips": 2831797, "rider_type": "Subscriber"}, {"year": 2023, "period": "Post-Pandemic (2023)", "usertype": "Customer", "trips": 955512, "rider_type": "Casual"}, {"year": 2023, "period": "Post-Pandemic (2023)", "usertype": "Subscriber", "trips": 2676516, "rider_type": "Subscriber"}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

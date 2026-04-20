@@ -25,11 +25,12 @@
     <p>
         We selected three years of Bluebikes trip data to compare: <b>2019</b> which is the last full year before the pandemic, <b>2022</b> when things were starting to recover, and <b>2023</b> which gives us a more recent picture. The goal here is to illuminate patterns that could help Bluebikes, as a company, make better decisions about where to locate stations, when to move bikes around, and how to think about their changing rider base.
     </p>
-    <p>Our analysis addresses four questions:</p>
+    <p>Our analysis addresses five questions:</p>
     <ol>
         <li>How has overall ridership changed and is the mix of Subscribers vs Casual riders shifting?</li>
         <li>Have the peak riding times changed since people started working from home?</li>
         <li>How has the station network grown geographically?</li>
+        <li>How much has the Casual rider segment grown in absolute terms, not just percentage?</li>
         <li>Are people riding differently in terms of how long their trips are?</li>
     </ol>
 </section>
@@ -67,6 +68,9 @@
     <p>
         At first glance, it's clear to see that 2022 and 2023 both exceed 2019 in total ridership across every month. The system did not just recover from the pandemic, it grew. The seasonal pattern is consistently observed, with summer peaks and winter dips, but even in the winter months 2023 saw nearly double the ridership of the same months in 2019. That suggests a broader and more committed rider base has formed. If you hover over the points you can also see that Casual riders are making up an increasing share of the total, especially in the warmer months.
     </p>
+    <p>
+        One thing worth flagging is the unusual spike in September 2022 which sits noticeably above the surrounding months. We are not sure if this reflects an actual usage surge or a reporting artifact from Bluebikes but it stands out from the broader trend and would be worth investigating further if we had access to more context on the data collection process.
+    </p>
 </section>
 
 <section>
@@ -93,23 +97,40 @@
         </div>
         <div id="map-container" style="width:700px; height:500px;"></div>
         <div class="tooltip" id="tooltip"></div>
+        <div id="map-legend">
+            <span class="legend-dot" style="background:#BA7517"></span> Original (2019)
+            <span class="legend-dot" style="background:#2563EB"></span> Added by 2022
+            <span class="legend-dot" style="background:#059669"></span> Added in 2023
+        </div>
     </div>
-    <p class="interaction-note">Click the year buttons to switch between years. Scroll to zoom in, drag to pan around. Hover over any station for details.</p>
+    <p class="interaction-note">Click the year buttons to switch between years. Scroll to zoom in or out, drag to pan around. Hover over any station to see its name, total trips, departures, and arrivals. Circle size reflects total trip volume and color indicates when the station was first active.</p>
     <h3>Takeaway</h3>
     <p>
-        The most visible change here is the significant growth of the network. Stations increased from 332 in 2019, to 440 in 2022, to 805 in 2023. Over the years, there is clearly an expansion beyond the original Cambridge and Boston core and into the surrounding neighborhoods. The busiest stations maintained their prominence as they are concentrated downtown and by high traffic university areas, but there is real demand growing for the newer, outlying stations as well. For Bluebikes, this presents a clear opportunity: Continue expanding the network with a focus on promoting these newer areas to build up ridership and increase the overall accessibility of the system.
+        The network has grown noticeably across the three years, from around 355 locations in 2019 to 448 in 2022 and 459 in 2023. Coloring stations by when they first appeared makes the shape of this growth clearer. The orange dots are the original 2019 footprint, the blue dots are the roughly 124 new stations added by 2022, and the green dots are the handful of additional stations that opened in 2023. Most of the expansion actually happened between 2019 and 2022. In 2023 the system mostly consolidated rather than expanded. You can also see that the new stations tend to sit on the outer edges, filling in neighborhoods like Chelsea, Newton, and parts of Brookline that were not served before. The busiest stations, shown as the largest circles, are still concentrated downtown and around the university corridor. For Bluebikes this points to two things. The rapid 2019 to 2022 push was an aggressive expansion that slowed down afterward, and the newer outer stations would benefit from promotion to build up ridership since they currently show smaller circles than the core.
     </p>
 </section>
 
 <section>
-    <h2>4. Trip Duration: How Has Riding Behavior Changed?</h2>
+    <h2>4. Casual Rider Growth: How Much Has the Segment Actually Expanded?</h2>
+    <div class="viz-container">
+        <iframe src="viz_html/viz6_casual_growth.html" width="620" height="400" frameborder="0"></iframe>
+    </div>
+    <p class="interaction-note">Hover over any bar to see the exact annual trip count for that rider type.</p>
+    <h3>Takeaway</h3>
+    <p>
+        Viz 1 showed the Casual rider share going up in percentage terms, but that could have happened just because Subscribers were shrinking. This chart confirms it is not just a relative shift. Casual trips roughly doubled from around 440 thousand in 2019 to nearly 940 thousand in both 2022 and 2023. Subscribers also grew but at a slower rate. So the Casual segment is genuinely expanding in raw numbers, not just in proportion, which strengthens the case for Bluebikes to invest in products tailored to casual use like day passes and weekend promotions.
+    </p>
+</section>
+
+<section>
+    <h2>5. Trip Duration: How Has Riding Behavior Changed?</h2>
     <div class="viz-container">
         <iframe src="viz_html/viz5_duration.html" width="770" height="620" frameborder="0"></iframe>
     </div>
-    <p class="interaction-note">Drag on the top line chart to select a duration range and the bottom bar chart will zoom into it. Use the Rider Type filter to compare Subscribers vs Casual riders.</p>
+    <p class="interaction-note">The chart is split into two panels. The <b>top chart</b> is an overview of the full duration range. Drag across a section of it to select a range. The <b>bottom chart</b> is a zoomed detail view that shows the bars grouped side by side for the selected range. Use the Rider type filter to compare Subscribers vs Casual riders.</p>
     <h3>Takeaway</h3>
     <p>
-        At first glance, trip durations look similar across all three years with most rides peaking around 5 to 10 minutes. But the interesting part comes when you filter to Casual only. Casual riders take significantly longer trips, around 19 minutes on average compared to about 10 for Subscribers. This can be explained as Subscribers are mostly commuters doing the same short route every day, while Casual riders are more likely exploring or running errands. Since we already explored the growth in total trips in the first chart, Bluebikes should consider how their pricing and dock availability can be adjusted for these longer and less predictable trip patterns.
+        At first glance, trip durations look similar across all three years with most rides peaking around 5 to 10 minutes. But the interesting part comes when you filter to Casual only. Casual riders take significantly longer trips, around 19 minutes on average compared to about 10 for Subscribers. This can be explained as Subscribers are mostly commuters doing the same short route every day, while Casual riders are more likely exploring or running errands. Combined with the growth we saw in the previous chart, Bluebikes should consider how their pricing and dock availability can be adjusted for these longer and less predictable trip patterns.
     </p>
 </section>
 
@@ -121,17 +142,17 @@
 
     <h3>1. Casual riders are becoming a much bigger part of the picture</h3>
     <p>
-        The share of Casual rides has grown significantly since 2019. This is not just a summer tourism anymore, the increase carries throughout the year. We think Bluebikes should adjust their strategy by investing in Casual friendly options, such as improved day passes, tourist oriented routes, and weekend promotions.
+        The share of Casual rides has grown significantly since 2019 and so has the raw count, roughly doubling between 2019 and 2022. This is not just a summer tourism story anymore, the increase carries throughout the year. We think Bluebikes should adjust their strategy by investing in Casual friendly options, such as improved day passes, tourist oriented routes, and weekend promotions.
     </p>
 
     <h3>2. People are not just riding during rush hour anymore</h3>
     <p>
-        The classic commute peaks at 8am and 5pm have flattened and usage is more evenly spread throughout the day. This can likely be attributed to the rise in remote and hybrid work. For Bluebikes that means the old model, rebalancing bikes twice a day during rush hour, will need to shift toward something more continuous. Additionally, the increase in ridership on Weekends warrants some attention to ensure there are enough bikes for Casual riders.
+        The classic commute peaks at 8am and 5pm have flattened and usage is more evenly spread throughout the day. This can likely be attributed to the rise in remote and hybrid work. For Bluebikes that means the old model, rebalancing bikes twice a day during rush hour, will need to shift toward something more continuous. The increase in weekend ridership also warrants some attention to ensure there are enough bikes for Casual riders.
     </p>
 
-    <h3>3. The station network is expanding fast</h3>
+    <h3>3. The station network grew fast and then leveled off</h3>
     <p>
-        The number of stations nearly doubled from 2019 to 2023. The newer stations show lower usage compared to the established core, as they lie on the outer edge of the network and are still building up ridership. The demand is there, Bluebikes should continue to accelerate growth by expanding the network and targeting any gaps in coverage. 
+        Between 2019 and 2022 Bluebikes added around 124 new stations, growing the network from roughly 355 to 448 locations. After that the expansion slowed down and only about 27 more stations were added in 2023. The newer stations sit mostly on the outer edges and show lower usage than the established core, as they are still building up ridership. The demand is there, Bluebikes should continue growing the network and focus on targeting any gaps in coverage.
     </p>
 
     <h3>Future Work</h3>
@@ -149,14 +170,26 @@
 (function() {
     var currentYear = 2019;
     var allData = [];
+    var firstYearByLocation = {};
     var tooltip = d3.select("#tooltip");
-    var sizeScale = d3.scaleSqrt().range([3, 14]);
+    var sizeScale = d3.scaleSqrt().range([4, 20]);
 
-    var map = L.map('map-container').setView([42.36, -71.06], 13);
+    var AGE_COLORS = {
+        'original': '#BA7517',
+        'added_2022': '#2563EB',
+        'added_2023': '#059669'
+    };
+
+    function locationKey(d) {
+        return d.lat.toFixed(3) + ',' + d.lng.toFixed(3);
+    }
+
+    var map = L.map('map-container').setView([42.355, -71.085], 12);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors',
-        maxZoom: 18
+        maxZoom: 18,
+        opacity: 0.55
     }).addTo(map);
 
     var svgLayer = L.svg();
@@ -166,8 +199,15 @@
     var g = svg.append("g");
 
     function projectPoint(lat, lng) {
-        var point = map.latLngToLayerPoint(new L.LatLng(lat, lng));
-        return point;
+        return map.latLngToLayerPoint(new L.LatLng(lat, lng));
+    }
+
+    function stationColor(d) {
+        var first = firstYearByLocation[locationKey(d)];
+        if (first === 2019) return AGE_COLORS.original;
+        if (first === 2022) return AGE_COLORS.added_2022;
+        if (first === 2023) return AGE_COLORS.added_2023;
+        return AGE_COLORS.original;
     }
 
     function updateMap(year) {
@@ -182,16 +222,17 @@
         circles.transition().duration(500)
             .attr("cx", function(d) { return projectPoint(d.lat, d.lng).x; })
             .attr("cy", function(d) { return projectPoint(d.lat, d.lng).y; })
-            .attr("r", function(d) { return sizeScale(d.trip_count); });
+            .attr("r", function(d) { return sizeScale(d.trip_count); })
+            .attr("fill", stationColor);
 
         circles.enter().append("circle")
             .attr("class", "station")
             .attr("cx", function(d) { return projectPoint(d.lat, d.lng).x; })
             .attr("cy", function(d) { return projectPoint(d.lat, d.lng).y; })
             .attr("r", 0)
-            .attr("fill", "#4a90d9")
-            .attr("opacity", 0.6)
-            .attr("stroke", "#2a5a8a")
+            .attr("fill", stationColor)
+            .attr("opacity", 0.75)
+            .attr("stroke", "#1f2937")
             .attr("stroke-width", 0.5)
             .on("mouseover", function(event, d) {
                 d3.select(this).attr("opacity", 1).attr("stroke-width", 2);
@@ -205,14 +246,14 @@
                     .style("top", (event.pageY - 25) + "px");
             })
             .on("mouseout", function() {
-                d3.select(this).attr("opacity", 0.6).attr("stroke-width", 0.5);
+                d3.select(this).attr("opacity", 0.75).attr("stroke-width", 0.5);
                 tooltip.style("opacity", 0);
             })
             .transition().duration(500)
             .attr("r", function(d) { return sizeScale(d.trip_count); });
 
-        var uniqueStations = new Set(yearData.map(function(d) { return d.station_id; }));
-        d3.select("#station-count").text(uniqueStations.size + " stations");
+        var uniqueLocations = new Set(yearData.map(locationKey));
+        d3.select("#station-count").text(uniqueLocations.size + " stations");
 
         d3.selectAll(".year-btn").classed("active", false);
         d3.selectAll(".year-btn").filter(function() {
@@ -239,6 +280,14 @@
             d.arrivals = +d.arrivals;
         });
         allData = data;
+
+        data.forEach(function(d) {
+            var key = locationKey(d);
+            if (firstYearByLocation[key] === undefined || d.year < firstYearByLocation[key]) {
+                firstYearByLocation[key] = d.year;
+            }
+        });
+
         updateMap(2019);
     });
 
