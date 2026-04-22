@@ -96,14 +96,13 @@
             <span id="station-count"></span>
         </div>
         <div id="map-container" style="width:700px; height:500px;"></div>
-        <div class="tooltip" id="tooltip"></div>
         <div id="map-legend">
             <span class="legend-dot" style="background:#BA7517"></span> Original (2019)
             <span class="legend-dot" style="background:#2563EB"></span> Added by 2022
             <span class="legend-dot" style="background:#059669"></span> Added in 2023
         </div>
     </div>
-    <p class="interaction-note">Click the year buttons to switch between years. Scroll to zoom in or out, drag to pan around. Hover over any station to see its name, total trips, departures, and arrivals. Circle size reflects total trip volume and color indicates when the station was first active.</p>
+    <p class="interaction-note">Click the year buttons to switch between years. Scroll to zoom in or out and drag to pan around. Circle size reflects total trip volume and color indicates when the station was first active.</p>
     <h3>Takeaway</h3>
     <p>
         The network has grown noticeably across the three years, from around 355 locations in 2019 to 448 in 2022 and 459 in 2023. Coloring stations by when they first appeared makes the shape of this growth clearer. The orange dots are the original 2019 footprint, the blue dots are the roughly 124 new stations added by 2022, and the green dots are the handful of additional stations that opened in 2023. Most of the expansion actually happened between 2019 and 2022. In 2023 the system mostly consolidated rather than expanded. You can also see that the new stations tend to sit on the outer edges, filling in neighborhoods like Chelsea, Newton, and parts of Brookline that were not served before. The busiest stations, shown as the largest circles, are still concentrated downtown and around the university corridor. For Bluebikes this points to two things. The rapid 2019 to 2022 push was an aggressive expansion that slowed down afterward, and the newer outer stations would benefit from promotion to build up ridership since they currently show smaller circles than the core.
@@ -171,7 +170,6 @@
     var currentYear = 2019;
     var allData = [];
     var firstYearByLocation = {};
-    var tooltip = d3.select("#tooltip");
     var sizeScale = d3.scaleSqrt().range([4, 20]);
 
     var AGE_COLORS = {
@@ -234,21 +232,6 @@
             .attr("opacity", 0.75)
             .attr("stroke", "#1f2937")
             .attr("stroke-width", 0.5)
-            .on("mouseover", function(event, d) {
-                d3.select(this).attr("opacity", 1).attr("stroke-width", 2);
-                tooltip.style("opacity", 1)
-                    .html("<b>" + d.station_name + "</b><br>Total trips: " + d.trip_count.toLocaleString() + "<br>Departures: " + d.departures.toLocaleString() + "<br>Arrivals: " + d.arrivals.toLocaleString())
-                    .style("left", (event.pageX + 10) + "px")
-                    .style("top", (event.pageY - 25) + "px");
-            })
-            .on("mousemove", function(event) {
-                tooltip.style("left", (event.pageX + 10) + "px")
-                    .style("top", (event.pageY - 25) + "px");
-            })
-            .on("mouseout", function() {
-                d3.select(this).attr("opacity", 0.75).attr("stroke-width", 0.5);
-                tooltip.style("opacity", 0);
-            })
             .transition().duration(500)
             .attr("r", function(d) { return sizeScale(d.trip_count); });
 

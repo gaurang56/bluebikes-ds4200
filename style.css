@@ -139,18 +139,6 @@ section {
     vertical-align: middle;
 }
 
-.tooltip {
-    position: absolute;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 6px 10px;
-    border-radius: 3px;
-    font-size: 12px;
-    pointer-events: none;
-    opacity: 0;
-    z-index: 100;
-}
-
 .conclusion-card {
     margin-bottom: 15px;
     padding-left: 15px;
